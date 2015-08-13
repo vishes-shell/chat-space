@@ -11,13 +11,13 @@ define("config", default=None, help="tornado config file")
 define("debug", default=False, help="debug mode")
 tornado.options.parse_command_line()
 
-STATIC_ROOT = path(ROOT, 'media')
+STATIC_ROOT = path(ROOT, 'static')
 TEMPLATE_ROOT = path(ROOT, 'templates')
 
 
 settings = dict(
     cookie_secret='some_secret_value',
-    template_loader=tornado.template.Loader(TEMPLATE_ROOT),
+    template_path=TEMPLATE_ROOT,
     static_path=STATIC_ROOT,
     xsrf_cookies=True,
 )

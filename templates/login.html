@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login in Chat Space</title>
+</head>
+<body>
+<form action="/login" method="post">
+    Name: <input type="text" name="name">
+    <input type="submit" value="Sign in">
+    {% raw xsrf_form_html() %}
+</form>
+</body>
+</html>

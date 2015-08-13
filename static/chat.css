@@ -1,0 +1,45 @@
+body {
+  background: white;
+  margin: 10px;
+}
+
+body,
+input {
+  font-family: sans-serif;
+  font-size: 10pt;
+  color: black;
+}
+
+table {
+  border-collapse: collapse;
+  border: 0;
+}
+
+td {
+  border: 0;
+  padding: 0;
+}
+
+#main-container {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+#input {
+  margin-top: 0.5em;
+}
+
+#inbox .message {
+  padding-top: 0.25em;
+}
+
+#inbox .message b{
+  font-weight: bold;
+  font-style: italic
+}
+
+#nav {
+  float: right;
+  z-index: 99;
+}
