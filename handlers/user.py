@@ -4,6 +4,7 @@ import logging
 import uuid
 
 from .base import BaseHandler
+from commands import commands
 
 
 class UserHandler(BaseHandler, tornado.websocket.WebSocketHandler):
@@ -46,9 +47,17 @@ class UserHandler(BaseHandler, tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         parsed = tornado.escape.json_decode(message)
+        body_text = parsed["body"]
+
+        for command in commands:
+            if command['regex'].fullmatch(body_text):
+                self.write_message({'html': '<div class="message" style="text-align: right">%s</div>' % body_text})
+                command['handler'](self)
+                return
+
         data = {
             "id": str(uuid.uuid4()),
-            "body": parsed["body"],
+            "body": body_text,
             "user": self.get_current_user().decode('utf-8'),
             "room": self.default_send_room.name
         }
