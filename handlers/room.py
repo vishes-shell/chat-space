@@ -1,5 +1,3 @@
-from .base import BaseHandler
-
 class RoomHandler(object):
     def __init__(self, name, user=None):
         self.name = name

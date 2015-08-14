@@ -14,17 +14,18 @@ class UserHandler(BaseHandler, tornado.websocket.WebSocketHandler):
     default_send_room = None
 
     def open(self):
-        logging.info('open')
         self.default_send_room = self.application.initial_room
         for subscriber in self.default_send_room.subscribers:
             try:
-                message = {'html': '<div class="message" style="text-align: center"><b>%s</b> joined conversation</div>' % self.get_current_user().decode('utf-8')}
+                message = {
+                    'html': '<div class="message" style="text-align: center"><b>%s</b> joined room <b>%s</b></div>' % (
+                        self.get_current_user().decode('utf-8'), self.default_send_room.name)}
                 subscriber.write_message(message)
-                logging.info('%s', message['html'])
             except:
                 logging.error("Error sending message", exc_info=True)
         self.application.initial_room.subscribers.add(self)
         self.rooms.add(self.application.initial_room)
+        self.write_message({'html': '<div class="message" style="text-align: center">Hello there! Type <b>/help</b></div>'})
 
     def on_close(self):
         if self.rooms:
@@ -40,7 +41,6 @@ class UserHandler(BaseHandler, tornado.websocket.WebSocketHandler):
                 message_template = 'self_message.html' if self == subscriber else 'message.html'
                 message['html'] = tornado.escape.to_basestring(
                     self.render_string(message_template, message=message))
-                logging.info('%s', message['html'])
                 subscriber.write_message(message)
             except:
                 logging.error("Error sending message", exc_info=True)
