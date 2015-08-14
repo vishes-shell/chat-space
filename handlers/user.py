@@ -50,9 +50,13 @@ class UserHandler(BaseHandler, tornado.websocket.WebSocketHandler):
         body_text = parsed["body"]
 
         for command in commands:
-            if command['regex'].fullmatch(body_text):
+            temp = command['regex'].fullmatch(body_text)
+            if temp:
                 self.write_message({'html': '<div class="message" style="text-align: right">%s</div>' % body_text})
-                command['handler'](self)
+                if temp.groupdict():
+                    command['handler'](self, temp.groupdict()['param'])
+                else:
+                    command['handler'](self)
                 return
 
         data = {
